@@ -3,6 +3,7 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Welcome from "../pages/welcome/welcome";
 import Home from "../pages/home/home";
+import Detail from "../pages/detail/detail";
 
 const initNavigator = createStackNavigator({
     Welcome: {
@@ -19,6 +20,9 @@ const mainNavigator = createStackNavigator({
         navigationOptions: {
             header: null,
         }
+    },
+    Detail: {
+        screen: Detail
     }
 })
 
