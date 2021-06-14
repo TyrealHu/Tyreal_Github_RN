@@ -2,10 +2,15 @@ import * as React from 'react';
 import { View, Text, StyleSheet } from "react-native";
 
 export default class PopularTab extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
     render() {
+        const {tabLabel} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>111111</Text>
+                <Text style={styles.welcome}>{tabLabel}</Text>
             </View>
         );
     }
