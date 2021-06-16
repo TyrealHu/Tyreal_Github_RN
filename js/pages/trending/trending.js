@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
+import {connect} from 'react-redux';
+import actions from '../../action';
 
-export default class Trending extends React.Component{
+class Trending extends React.Component{
     render() {
         const {navigation} = this.props;
         return (
@@ -10,18 +12,19 @@ export default class Trending extends React.Component{
                 <Button
                     title={'改变颜色'}
                     onPress={() => {
-                        navigation.setParams({
-                            theme: {
-                                tintColor: 'blue',
-                                updateTime: new Date().getTime(),
-                            }
-                        })
+                        this.props.onThemeChange('blue')
                     }}
                 />
             </View>
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    onThemeChange: theme => dispatch(actions.onThemeChange(theme))
+});
+
+export default connect(null, mapDispatchToProps)(Trending);
 
 const styles = StyleSheet.create({
     container: {

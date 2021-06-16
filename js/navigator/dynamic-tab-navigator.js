@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { createAppContainer } from "react-navigation";
 import { BottomTabBar, createBottomTabNavigator } from "react-navigation-tabs";
+import { connect } from 'react-redux';
 
-export default class DynamicTabNavigator extends React.Component {
+class DynamicTabNavigator extends React.Component {
     constructor(props) {
         super(props);
         this.tabs = props.tabs
@@ -10,10 +11,13 @@ export default class DynamicTabNavigator extends React.Component {
     }
 
     _tabNavigator() {
-        this.tabs.Popular.navigationOptions.tabBarLabel = '最热1';
-        return createAppContainer(createBottomTabNavigator(this.tabs, {
-            tabBarComponent: TavBarComponent
-        }))
+        if (!this.Tabs) {
+            this.tabs.Popular.navigationOptions.tabBarLabel = '最热1';
+            this.Tabs = createAppContainer(createBottomTabNavigator(this.tabs, {
+                tabBarComponent: (props) => <TavBarComponent theme={this.props.theme} {...props}/>
+            }));
+        }
+        return this.Tabs;
     }
 
     render() {
@@ -23,22 +27,13 @@ export default class DynamicTabNavigator extends React.Component {
 }
 
 class TavBarComponent extends React.Component{
-    constructor(props) {
-        super(props);
-        this.theme = {
-            tintColor: props.activeTintColor,
-            updateTime: new Date().getTime()
-        }
-    }
-
     render() {
-        const {routes, index} = this.props.navigation.state;
-        if (routes[index].params) {
-            const {theme} = routes[index].params;
-            if (theme && theme.updateTime > this.theme.updateTime) {
-                this.theme = theme;
-            }
-        }
-        return <BottomTabBar {...this.props} activeTintColor={this.theme.tintColor || this.props.activeTintColor}/>;
+        return <BottomTabBar {...this.props} activeTintColor={this.props.theme}/>;
     }
 }
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+});
+
+export default connect(mapStateToProps)(DynamicTabNavigator);
